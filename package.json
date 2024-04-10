@@ -27,7 +27,9 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@metamask/keyring-controller": "^14.0.1",
     "autoprefixer": "^10.4.7",
+    "crypto-js": "^4.2.0",
     "ethers": "5.7.2",
     "postcss": "^8.4.14",
     "react-router-dom": "6.2",
