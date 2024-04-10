@@ -539,6 +539,13 @@
   dependencies:
     "@metamask/utils" "^8.2.0"
 
+"@metamask/browser-passworder@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@metamask/browser-passworder/-/browser-passworder-5.0.0.tgz#760923b176f5de5d35b8e543583b476d102ff681"
+  integrity sha512-L90OlWgugmL1RNgmL7SErAvh+LuPlLzWGL4m2qGrJ+vEkvRZlQXwWZx70rBnfH08GjyViVwSaRZgk0oozLlNTw==
+  dependencies:
+    "@metamask/utils" "^8.2.0"
+
 "@metamask/controller-utils@^9.0.1":
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/@metamask/controller-utils/-/controller-utils-9.0.2.tgz#efae1316fc6694078dfc103534bdb9a1eea2cbdd"
@@ -1883,7 +1890,7 @@ elliptic@6.5.4:
     minimalistic-assert "^1.0.1"
     minimalistic-crypto-utils "^1.0.1"
 
-elliptic@^6.5.4:
+elliptic@^6.5.4, elliptic@^6.5.5:
   version "6.5.5"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.5.tgz#c715e09f78b6923977610d4c2346d6ce22e6dded"
   integrity sha512-7EjbcmUm17NQFu4Pmgmq2olYMj8nwMnpcddByChSUjArp8F5DQWcIcpriwO4ZToLNAJig0yiyjswfyGNje/ixw==
@@ -2646,6 +2653,11 @@ js-sha3@^0.5.7:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.5.7.tgz#0d4ffd8002d5333aabaf4a23eed2f6374c9f28e7"
   integrity sha512-GII20kjaPX0zJ8wzkTbNDYMY7msuZcTWk8S5UOh6806Jq/wz1J8/bnr8uGU0DAUmYDjj2Mr4X1cW8v/GLYnR+g==
+
+js-sha3@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.9.3.tgz#f0209432b23a66a0f6c7af592c26802291a75c2a"
+  integrity sha512-BcJPCQeLg6WjEx3FE591wVAevlli8lxsxm9/FzV4HXkV49TmBH38Yvrpce6fjbADGMKFrBMGTqrVz3qPIZ88Gg==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
