@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -14,6 +15,7 @@ module.exports = {
         injected: path.resolve('src/injected/injected.ts'),
         onboard: path.resolve('src/onboard/index.tsx'),
         newTab: path.resolve('src/tabs/index.tsx'),
+        controller: path.resolve('src/controllers/index.ts'),
     },
     module: {
         rules: [
@@ -53,6 +55,9 @@ module.exports = {
         new CleanWebpackPlugin({
             cleanStaleWebpackAssets: false
         }),
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+          }),
         new CopyPlugin({
             patterns: [{
                 from: path.resolve('src/static'),
@@ -67,7 +72,16 @@ module.exports = {
         ])
     ],
     resolve: {
-        extensions: ['.tsx', '.js', '.ts']
+        extensions: ['.tsx', '.js', '.ts'],
+        fallback: { 
+            "stream": require.resolve("stream-browserify"),
+            "crypto": require.resolve("crypto-browserify") ,
+            "url": false ,
+            "zlib": require.resolve("browserify-zlib"),
+            "https": require.resolve("https-browserify"),
+            "http": require.resolve("stream-http"),
+            "vm": require.resolve("vm-browserify") 
+        },
     },
     output: {
         filename: '[name].js',
