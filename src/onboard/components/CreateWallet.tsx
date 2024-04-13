@@ -1,32 +1,66 @@
 import React, { useEffect, useState } from 'react'
 import { generateAccount } from '../../wallet-utils/accountUtils'
 import { useNavigate } from 'react-router-dom'
+import KeyringController from '../../controllers/keyring-controller'
 const CreateWallet = () => {
   const navigate = useNavigate()
+
+  const keyring = new KeyringController();
 
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    
     if (password !== confirmPassword) {
       alert('Passwords do not match')
     }
+
+    //Onboard
+    const keyStringstate =  chrome.storage.local.get(['keyringState'])
+  
+    keyring.loadStore(keyStringstate)
+    keyring.store.subscribe(value => {
+      console.log("keyring state>>>", value)
+    })
+    
+    await keyring.boot(password);
+
+    //get mnemonic
+    let seed = await keyring.getMnemonic();
+    console.log("seed", seed)
+
+
+   await keyring.createKeyringWithMnemonics(seed);
+
+    const k = keyring.filterKeyringsByType("HD Key Tree")
+  //  console.log("kekk", k)
+   const accts = await keyring.addNewAccount(k[0])
+    console.log("acctss", accts)
+
+   
+    const getAcct = await keyring.getAccounts()
+
+    console.log("getAcct", getAcct)
+
+
+
 
     //store it encrypted password
     chrome.storage.local.set({ encryptedPassword: password }, function() {
       console.log("Data has been stored.");
     });
-    
-    let account = generateAccount();
-    console.log("acct created", account)
+
+    // let account = generateAccount();
+    // console.log("acct created", account)
 
     // Handle the password creation logic here
     console.log('password', password)
     console.log('confirmPassword', confirmPassword)
     console.log(password, confirmPassword)
 
-    navigate('/wallet-created')
+   // navigate('/wallet-created')
   }
 
   return (
@@ -63,7 +97,7 @@ const CreateWallet = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 required
-                minLength={8}
+                minLength={3}
               />
             </div>
             <div className="mb-4">
@@ -74,7 +108,7 @@ const CreateWallet = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 value={confirmPassword}
                 required
-                minLength={8}
+                minLength={3}
               />
             </div>
             <div className="mb-6">
