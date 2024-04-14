@@ -1,4 +1,6 @@
-chrome.runtime.onInstalled.addListener((details) => {
+import browser from 'webextension-polyfill';
+
+browser.runtime.onInstalled.addListener((details) => {
     console.log("details", details)
     if(details.reason === 'install'){
         checkRegistration();
@@ -9,10 +11,10 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 
 function checkRegistration() {
-    chrome.storage.local.get(["isRegistered"], function(result) {
+  browser.storage.local.get(["isRegistered"], function(result) {
       if (!result.isRegistered) {
         // User is not registered, open the registration page
-        chrome.tabs.create({ url: "onboard.html" });
+        browser.tabs.create({ url: "onboard.html" });
       }
     });
   }
