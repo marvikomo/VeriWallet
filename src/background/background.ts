@@ -1,6 +1,4 @@
-import browser from 'webextension-polyfill';
-
-browser.runtime.onInstalled.addListener((details) => {
+chrome.runtime.onInstalled.addListener((details) => {
     console.log("details", details)
     if(details.reason === 'install'){
         checkRegistration();
@@ -9,12 +7,17 @@ browser.runtime.onInstalled.addListener((details) => {
   
 });
 
+    //Setup connection
+    chrome.runtime.onConnect.addListener((port) => {
+      console.log("port---->", port)
+  });
+
 
 function checkRegistration() {
-  browser.storage.local.get(["isRegistered"], function(result) {
+    chrome.storage.local.get(["isRegistered"], function(result) {
       if (!result.isRegistered) {
         // User is not registered, open the registration page
-        browser.tabs.create({ url: "onboard.html" });
+        chrome.tabs.create({ url: "onboard.html" });
       }
     });
   }

@@ -65,6 +65,11 @@ module.exports = {
                 to: path.resolve('dist')
             }]
         }),
+        new CopyPlugin({
+            patterns: [
+              { from: 'node_modules/webextension-polyfill/dist/browser-polyfill.min.js', to: 'browser-polyfill.min.js' }
+            ]
+          }),
         ...getHtmlPlugins([
             'popup',
             'options',

@@ -1,3 +1,4 @@
+
 const scriptElement = document.createElement('script');
 scriptElement.src = chrome.runtime.getURL('injected.js');
 scriptElement.onload = function() {
@@ -5,18 +6,28 @@ scriptElement.onload = function() {
 };
 (document.head || document.documentElement).appendChild(scriptElement);
 
-window.addEventListener("message", (event) => {
+let port = undefined
 
-    console.log("Received..")
-    // chrome.runtime.sendMessage({ type: 'requestAccount' }, (response) => {
-    //     console.log('Connected Account:', response.account);
-    //   });
-    // We only accept messages from ourselves
-    // if (event.source != window)
-    //   return;
-  
-    // if (event.data.type && (event.data.type == "FROM_PAGE")) {
-    //   console.log("Content script received message: " + event.data.text);
-    //   chrome.runtime.sendMessage({yourMessage: event.data});
-    // }
+
+window.addEventListener("message", (message) => {
+    if(message.source !== window || message.origin !== window.location.origin)  return;
+
+      console.log("event listener message", message)
+      console.log("port initialized", port)
+      port.postMessage(message)
+
   });
+
+
+
+  const init = () => {
+     port = chrome.runtime.connect({ name: 'provider' });
+    port.onMessage.addListener((message: any): void => {
+
+        console.log("prot message", message)
+
+    })
+
+  }
+
+  init();

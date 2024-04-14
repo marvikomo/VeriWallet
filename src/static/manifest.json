@@ -8,10 +8,9 @@
         "default_title": "veriwallet",
         "default_icon" : "icon.png"
     },
-    "chrome_url_overrides": {
-        "newtab": "newTab.html"
-    },
+
     "permissions": [
+        "activeTab",
         "tabs",
         "bookmarks",
         "storage",
@@ -30,7 +29,8 @@
         {
             "matches": ["<all_urls>"],
             "all_frames": true,
-            "js": ["contentScript.js"]
+            "js": ["contentScript.js"],
+            "run_at": "document_start"
         }
     ],
     "web_accessible_resources": [

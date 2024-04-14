@@ -1,20 +1,14 @@
 
 
-interface Window {
-    veriwallet?: {
-      isInjectedProvider: boolean;
-      request: ({ method, params }: { method: string; params?: any[] }) => Promise<any>;
-    };
-  }
 // injectedScript.js
 (function() {
-    if (typeof window.veriwallet !== 'undefined') {
+    if (typeof (window as any).ethereum !== 'undefined') {
         console.warn("An veriwallet provider is already injected.");
         return;
     }
 
-    window.veriwallet = {
-        isInjectedProvider: false,
+    (window as any).ethereum = {
+        isInjectedProvider: true,
         request: async ({ method, params }) => {
             console.log(`Mock Ethereum request method: ${method}`, params);
             console.log("window", window)
@@ -23,7 +17,7 @@ interface Window {
                 data: {
                     someInformation: 'Hello from the in-page script!'
                 }
-            }, '*');
+            }, window.location.href);
             // return new Promise((resolve, reject) => {
             //     chrome.runtime.sendMessage({ method, params }, response => {
             //       if (response.error) {
