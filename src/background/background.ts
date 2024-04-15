@@ -1,3 +1,6 @@
+import { handleEvent } from "../controllers/event-handler";
+import ProviderController from "../controllers/provider-controller";
+
 chrome.runtime.onInstalled.addListener((details) => {
     console.log("details", details)
     if(details.reason === 'install'){
@@ -10,6 +13,7 @@ chrome.runtime.onInstalled.addListener((details) => {
     //Setup connection
     chrome.runtime.onConnect.addListener((port) => {
       console.log("port---->", port)
+      handleEvent(port, new ProviderController())
   });
 
 

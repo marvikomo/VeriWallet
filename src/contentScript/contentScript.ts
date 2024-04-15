@@ -11,9 +11,6 @@ let port = undefined
 
 window.addEventListener("message", (message) => {
     if(message.source !== window || message.origin !== window.location.origin)  return;
-
-      console.log("event listener message", message)
-      console.log("port initialized", port)
       port.postMessage(message)
 
   });
