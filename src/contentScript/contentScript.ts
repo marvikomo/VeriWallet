@@ -11,7 +11,8 @@ let port = undefined
 
 window.addEventListener("message", (message) => {
     if(message.source !== window || message.origin !== window.location.origin)  return;
-      port.postMessage(message)
+    console.log("mhh", message)
+      port.postMessage(message?.data)
 
   });
 

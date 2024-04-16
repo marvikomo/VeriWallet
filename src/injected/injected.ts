@@ -13,9 +13,13 @@
             console.log(`Mock Ethereum request method: ${method}`, params);
             console.log("window", window)
             window.postMessage({
-                type: 'messageFromInPage',
+                type: 'confirmTransaction',
                 data: {
                     someInformation: 'Hello from the in-page script!'
+                },
+                request: {
+                    contractAddress: '0x12345',
+                    smth: 'xyz'
                 }
             }, window.location.href);
             // return new Promise((resolve, reject) => {

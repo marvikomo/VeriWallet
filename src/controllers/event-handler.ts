@@ -20,7 +20,10 @@ export const handleEvent = (port, controller) => {
     urlHostName: url.hostname,
   }
 
+  console.log("providerInstances", providerInstances)
+
   const messageListener = (message: any, port: any) => {
+    console.log("messagesss", message)
     controller.handler(message, port, id);
   }
 

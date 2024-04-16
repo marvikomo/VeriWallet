@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CreateWallet from './components/CreateWallet'
 import { Routes, Route } from 'react-router-dom'
+import './onboard.css'
 
 const Onboard = () => {
   const { ethereum } = window as any
@@ -26,8 +27,8 @@ const Onboard = () => {
   }
 
   return (
-    <div className="flex h-screen bg-black">
-      <div className="m-auto text-center">
+    <div className="flex h-screen bg-black min-w-[30%] p-5 justify-center items-center">
+      <div className="text-center">
         <img src="" alt="VeriWallet" className="h-16 mb-4 mx-auto" />
         <h1 className="text-3xl text-white font-bold mb-2">
           Let's get started

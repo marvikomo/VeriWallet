@@ -60,12 +60,12 @@ const CreateWallet = () => {
     console.log('confirmPassword', confirmPassword)
     console.log(password, confirmPassword)
 
-   // navigate('/wallet-created')
+    navigate('/wallet-created')
   }
 
   return (
-    <div className="flex h-screen bg-black">
-      <div className="m-auto w-full max-w-md text-center">
+    <div className="flex h-screen bg-black w-[60%] p-5 justify-center items-center">
+      <div className="m-auto w-full text-center">
         <header className="flex justify-between items-center px-4 mb-4">
           {/* Assuming you have the MetaMask logo as an SVG or image */}
           <img
