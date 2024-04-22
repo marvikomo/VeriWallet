@@ -10,6 +10,14 @@ const CreateWallet = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
+  useEffect(() => {
+    keyring.getAccounts().then(res => {
+      console.log("res>>>>>", res)
+    })
+     
+  }, []);
+
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     
@@ -119,7 +127,7 @@ const CreateWallet = () => {
                   required
                 />
                 <span className="ml-2 text-gray-400 text-sm">
-                  I understand that MetaMask cannot recover this password for
+                  I understand that veriwallet cannot recover this password for
                   me.
                 </span>
               </label>

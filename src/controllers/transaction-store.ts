@@ -1,24 +1,7 @@
-import { makeAutoObservable } from 'mobx';
+import { ObservableStore } from '@metamask/obs-store';
 
- class TransactionStore {
-    transactions = {};
+const transactionStore = new ObservableStore({
+  transactions: []
+});
 
-    constructor() {
-        makeAutoObservable(this);
-    }
-
-    setTransaction(id, details) {
-        this.transactions[id] = details;
-    }
-
-    getTransaction(id) {
-        return this.transactions[id];
-    }
-
-    clearTransaction(id) {
-        delete this.transactions[id];
-    }
-}
-
-export default new TransactionStore();
-
+export default transactionStore;

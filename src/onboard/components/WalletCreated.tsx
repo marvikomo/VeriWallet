@@ -11,6 +11,12 @@ const WalletCreated = () => {
       console.log('No encrypted seed found')
     }
   })
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    window.location.href = 'popup.html';
+  }
+
   return (
     <div className="bg-black min-h-screen flex items-center p-5 justify-center">
       <div className="max-w-lg mx-auto text-center p-8 bg-gray-800 rounded-lg">
@@ -57,7 +63,7 @@ const WalletCreated = () => {
     </div> */}
 
         <div className="mb-6">
-          <button className="bg-blue-600 text-white text-sm px-6 py-2 rounded hover:bg-blue-700 transition-colors">
+          <button onClick={handleSubmit} className="bg-blue-600 text-white text-sm px-6 py-2 rounded hover:bg-blue-700 transition-colors">
             Got it
           </button>
         </div>

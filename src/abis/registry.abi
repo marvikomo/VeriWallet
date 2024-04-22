@@ -1,0 +1,367 @@
+{
+    "abi": [
+        {
+            "inputs": [],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "dAppAddress",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "newAuditReport",
+                    "type": "string"
+                }
+            ],
+            "name": "AuditReportUpdated",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "dAppAddress",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "bool",
+                    "name": "approved",
+                    "type": "bool"
+                }
+            ],
+            "name": "DAppApproved",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "dAppAddress",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "companyName",
+                    "type": "string"
+                }
+            ],
+            "name": "DAppRegistered",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "dAppAddress",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "report",
+                    "type": "string"
+                }
+            ],
+            "name": "FraudReported",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "dAppAddress",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "report",
+                    "type": "string"
+                }
+            ],
+            "name": "VulnerabilityReported",
+            "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "admin",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "allDApps",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_dAppAddress",
+                    "type": "address"
+                }
+            ],
+            "name": "approveDApp",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "name": "dAppRegistry",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "companyName",
+                    "type": "string"
+                },
+                {
+                    "internalType": "address",
+                    "name": "dAppAddress",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "auditReport",
+                    "type": "string"
+                },
+                {
+                    "internalType": "bool",
+                    "name": "isFraudulent",
+                    "type": "bool"
+                },
+                {
+                    "internalType": "string",
+                    "name": "vulnerabilityReport",
+                    "type": "string"
+                },
+                {
+                    "internalType": "bool",
+                    "name": "approved",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getAllDAppsDetails",
+            "outputs": [
+                {
+                    "components": [
+                        {
+                            "internalType": "string",
+                            "name": "companyName",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "dAppAddress",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "auditReport",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "bool",
+                            "name": "isFraudulent",
+                            "type": "bool"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "vulnerabilityReport",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "bool",
+                            "name": "approved",
+                            "type": "bool"
+                        }
+                    ],
+                    "internalType": "struct DAppRegistry.DAppDetails[]",
+                    "name": "",
+                    "type": "tuple[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_dAppAddress",
+                    "type": "address"
+                }
+            ],
+            "name": "getDAppDetails",
+            "outputs": [
+                {
+                    "components": [
+                        {
+                            "internalType": "string",
+                            "name": "companyName",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "dAppAddress",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "auditReport",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "bool",
+                            "name": "isFraudulent",
+                            "type": "bool"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "vulnerabilityReport",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "bool",
+                            "name": "approved",
+                            "type": "bool"
+                        }
+                    ],
+                    "internalType": "struct DAppRegistry.DAppDetails",
+                    "name": "",
+                    "type": "tuple"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_dAppAddress",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_companyName",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_auditReport",
+                    "type": "string"
+                }
+            ],
+            "name": "registerDApp",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_dAppAddress",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_report",
+                    "type": "string"
+                }
+            ],
+            "name": "reportFraud",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_dAppAddress",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_report",
+                    "type": "string"
+                }
+            ],
+            "name": "reportVulnerability",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_dAppAddress",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_newAuditReport",
+                    "type": "string"
+                }
+            ],
+            "name": "updateAuditReport",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ]
+
+}

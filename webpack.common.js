@@ -16,6 +16,7 @@ module.exports = {
         onboard: path.resolve('src/onboard/index.tsx'),
         newTab: path.resolve('src/tabs/index.tsx'),
         controller: path.resolve('src/controllers/index.ts'),
+        transaction: path.resolve('src/transactions/index.tsx')
     },
     module: {
         rules: [
@@ -74,11 +75,12 @@ module.exports = {
             'popup',
             'options',
             'newTab',
-            'onboard'
+            'onboard',
+            'transaction'
         ])
     ],
     resolve: {
-        extensions: ['.tsx', '.js', '.ts'],
+        extensions: ['.tsx', '.js', '.ts', '.json', '.jsx', '.mjs' ],
         fallback: { 
             "stream": require.resolve("stream-browserify"),
             "crypto": require.resolve("crypto-browserify") ,
@@ -86,7 +88,8 @@ module.exports = {
             "zlib": require.resolve("browserify-zlib"),
             "https": require.resolve("https-browserify"),
             "http": require.resolve("stream-http"),
-            "vm": require.resolve("vm-browserify") 
+            "vm": require.resolve("vm-browserify") ,
+            "process": require.resolve("process/browser")
         },
     },
     output: {

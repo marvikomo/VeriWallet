@@ -1,6 +1,12 @@
 import { handleEvent } from "../controllers/event-handler";
 import ProviderController from "../controllers/provider-controller";
 
+let popupPort = null;
+
+let requestData = {
+  message: "I am fine"
+}
+
 chrome.runtime.onInstalled.addListener((details) => {
     console.log("details", details)
     if(details.reason === 'install'){
@@ -12,7 +18,28 @@ chrome.runtime.onInstalled.addListener((details) => {
 
     //Setup connection
     chrome.runtime.onConnect.addListener((port) => {
-      console.log("port---->", port)
+      console.log("came here to trigger")
+      if(port.name === 'popup') {
+        console.log("came to popup")
+        popupPort = port
+        popupPort.onDisconnect.addListener(() => {
+          popupPort = null;
+        })
+        
+        popupPort.onMessage.addListener(msg => {
+          if (msg.type === 'REQUEST_POPUP_DATA' && popupPort) {
+            // Immediately send stored data if available
+            popupPort.postMessage({
+              type: 'NEW_DATA',
+              payload:requestData
+          });
+
+        }
+
+        })
+
+
+      }
       handleEvent(port, new ProviderController())
   });
 

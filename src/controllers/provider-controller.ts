@@ -1,5 +1,6 @@
 import TransactionController from "./transaction-controller";
 import { providerInstances } from "./event-handler";
+import transactionStore from "./transaction-store";
 
 
 export const RequestType = {
@@ -31,19 +32,22 @@ class ProviderController {
 
     private async confirmTransaction(request, portId) {
       const instance = providerInstances[portId];
-    
-     // transactionStore.setTransaction(portId, request)
+      
 
       // console.log("portid", portId)
 
       // console.log("transactionstore", transactionStore.getTransaction(portId));
+    //   const currentTransactions = transactionStore.getState().transactions;
+    // transactionStore.putState({
+    //     transactions: [...currentTransactions, request]
+    // });
 
       const currentWindow = await chrome.windows.getCurrent();
       console.log("current window", currentWindow)
       console.log("isntnce", instance);
 
       chrome.windows.create({
-        url: chrome.runtime.getURL('popup.html') + '?tabId=' + portId,
+        url: chrome.runtime.getURL('transaction.html') + '?tabId=' + portId,
         type: 'popup',
         width: 400,
         height: 600

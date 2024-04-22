@@ -1,0 +1,83 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1c1c1e;
+    color: #fff;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    font-size: 16px;
+    margin: 0;
+  }
+  
+  button {
+    background-color: #8e8e93;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .panel, .gas-panel {
+    background-color: #2c2c2e;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .panel-item {
+    border-bottom: 1px solid #404040;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .panel-item:last-child {
+    border-bottom: none;
+  }
+  
+  h2, h3 {
+    color: #8e8e93;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+  }
+  
+  p {
+    margin: 0 0 10px 0;
+  }
+  
+  a {
+    color: #0a84ff;
+    text-decoration: none;
+  }
+  
+  .gas-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .gas-options button {
+    background-color: #3a3a3c;
+    margin-right: 5px;
+    flex: 1;
+  }
+  
+  .balance-info {
+    font-size: 12px;
+  }

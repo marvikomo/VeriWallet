@@ -4,7 +4,6 @@ export const extensionInstances = {};
 export const providerInstances = {};
 
 export const handleEvent = (port, controller) => {
-    console.log("came to handle event...")
   const id = uuid()
   //To prevent cross site
   if (port.name !== 'provider') {

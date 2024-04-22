@@ -2,11 +2,11 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CreateWallet from './components/CreateWallet'
 import { Routes, Route } from 'react-router-dom'
-import './onboard.css'
 
 const Onboard = () => {
   const { ethereum } = window as any
   const navigate = useNavigate()
+ 
 
   const handleCreateWalletClick = () => {
     navigate('/create-wallet') // Navigate to the CreateWallet route
