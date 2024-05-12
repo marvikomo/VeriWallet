@@ -13,15 +13,44 @@
             console.log(`Mock Ethereum request method: ${method}`, params);
             console.log("window", window)
             window.postMessage({
-                type: 'confirmTransaction',
                 data: {
                     someInformation: 'Hello from the in-page script!'
                 },
                 request: {
-                    contractAddress: '0x12345',
-                    smth: 'xyz'
+                     method,
+                     params
                 }
             }, window.location.href);
+
+
+            return new Promise((resolve, reject) => {
+                function handleResponse(event) {
+                    console.log("event came", event)
+                    if (event.source === window && event.data.type === 'VERIWALLET_RESPONSE') {
+                        if (event.data.error) {
+                            reject(new Error(event.data.error));
+                        } else {
+                            resolve(event.data.response);
+                        }
+                        window.removeEventListener('message', handleResponse);
+                    }
+                }
+
+                window.addEventListener('message', handleResponse);
+            });
+        
+            
+
+            // window.postMessage({
+            //     type: 'confirmTransaction',
+            //     data: {
+            //         someInformation: 'Hello from the in-page script!'
+            //     },
+            //     request: {
+            //         contractAddress: '0x12345',
+            //         smth: 'xyz'
+            //     }
+            // }, window.location.href);
             // return new Promise((resolve, reject) => {
             //     chrome.runtime.sendMessage({ method, params }, response => {
             //       if (response.error) {

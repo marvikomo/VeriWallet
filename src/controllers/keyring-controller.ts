@@ -39,6 +39,7 @@ class KeyringController extends EventEmitter {
   kerings: any[];
   encryptor: typeof encryptor = encryptor;
   serializedKeyrings: any[]
+  private static instance: KeyringController | null = null;
 
   constructor() {
     super()
@@ -51,6 +52,13 @@ class KeyringController extends EventEmitter {
     })
     this.keyrings = []
     this.serializedKeyrings = []
+  }
+
+  public static getInstance(): KeyringController {
+    if (!KeyringController.instance) {
+      KeyringController.instance = new KeyringController();
+    }
+    return KeyringController.instance;
   }
 
 
@@ -70,7 +78,7 @@ class KeyringController extends EventEmitter {
 
 
 
-//This is to verify if a password is correctly provided to unlock the wallet i,e when use come back
+//This is to verify if a password is correctly provided to unlock the wallet i,e when user come back
   async submitPassword(password: string): Promise<MemStoreState> {
     console.log("try here", this.store.getState())
     await this.verifyPassword(password);
@@ -113,6 +121,10 @@ class KeyringController extends EventEmitter {
     return await this.encryptor.decrypt(this.password, encryptedMnemonic)
   }
 
+   getKeyrings(): any {
+     return this.kerings
+   }
+
 
  /**
  * Creates a new vault and restores from a mnemonic phrase.
@@ -142,7 +154,7 @@ async createKeyringWithMnemonics(seed: string) {
         activeIndexes: []
     });
 
-    //console.log("keyring", keyring)
+    console.log("keyringsss", keyring)
 
     await this.persistAllKeyrings();
 
@@ -154,19 +166,18 @@ async addNewAccount(selectedKeyring: any): Promise<string[]> {
     await selectedKeyring.addAccounts(1);
     // Fetch accounts, considering whether the keyring has specific methods for branded accounts
     const accounts = await  selectedKeyring.getAccounts();
-
+  console.log("accounts>>.", selectedKeyring)
     // Normalize and process accounts
     const allAccounts = accounts.map(account => ({
         address: normalizeAddress(typeof account === 'string' ? account : account.address),
         brandName: typeof account === 'string' ? selectedKeyring.type : (account.realBrandName || account.brandName),
     }));
 
-    // Set aliases and emit new account events for each account
+    //emit new account events for each account
     for (const account of allAccounts) {
-        //this.setAddressAlias(account.address, selectedKeyring, account.brandName);
         this.emit('newAccount', account.address);
     }
-
+   
     // Persist changes to keyrings and update internal state
      await this.persistAllKeyrings();
      await this._updateMemStoreKeyrings();
@@ -207,8 +218,6 @@ async addNewAccount(selectedKeyring: any): Promise<string[]> {
     // Update the entire state and return the added keyring
     //await this.fullUpdate();
     return keyring;
-
-
   }
 
 
@@ -263,6 +272,8 @@ async addNewAccount(selectedKeyring: any): Promise<string[]> {
    }
 
    async getAccounts(): Promise<string[]> {
+
+    console.log("getting acct", this.keyrings)
     const keyrings = this.keyrings || [];
     const addrs = await Promise.all(
       keyrings.map((kr:any) => kr.getAccounts())
@@ -274,6 +285,13 @@ async addNewAccount(selectedKeyring: any): Promise<string[]> {
     return addrs.map(normalizeAddress);
   }
 
+  async exportAccount(address: string): Promise<any> {
+    //Normally this should filter keyring by address since its just one i have in the array
+    let keyring: any = this.keyrings[0];
+    console.log("jjjj", keyring)
+    return await keyring.exportAccount(normalizeAddress(address))
+  
+  }
 
 
   
@@ -461,4 +479,4 @@ getKeyringClass(type: string): any {
 
 }
 
-export default KeyringController;
+export default  KeyringController.getInstance();

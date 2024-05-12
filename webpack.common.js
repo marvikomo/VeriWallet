@@ -16,7 +16,8 @@ module.exports = {
         onboard: path.resolve('src/onboard/index.tsx'),
         newTab: path.resolve('src/tabs/index.tsx'),
         controller: path.resolve('src/controllers/index.ts'),
-        transaction: path.resolve('src/transactions/index.tsx')
+        transaction: path.resolve('src/transactions/index.tsx'),
+        connect: path.resolve('src/connect/index.tsx')
     },
     module: {
         rules: [
@@ -59,6 +60,7 @@ module.exports = {
         new webpack.ProvidePlugin({
             Buffer: ['buffer', 'Buffer'],
             process: 'process/browser',
+            _: 'lodash'
           }),
         new CopyPlugin({
             patterns: [{
@@ -76,7 +78,8 @@ module.exports = {
             'options',
             'newTab',
             'onboard',
-            'transaction'
+            'transaction',
+            'connect'
         ])
     ],
     resolve: {
@@ -89,7 +92,8 @@ module.exports = {
             "https": require.resolve("https-browserify"),
             "http": require.resolve("stream-http"),
             "vm": require.resolve("vm-browserify") ,
-            "process": require.resolve("process/browser")
+            "process": require.resolve("process/browser"),
+            "events": require.resolve("events/")
         },
     },
     output: {

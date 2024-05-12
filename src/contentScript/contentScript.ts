@@ -24,6 +24,7 @@ const windowListener = async ({ data, source }) => {
         : data
     try {
       if (!port) {
+
         // Port was reinitialized, force retry
         throw new Error()
       }
@@ -45,6 +46,18 @@ const init = () => {
   port = chrome.runtime.connect({ name: 'provider' })
   port.onMessage.addListener((message: any): void => {
     console.log('prot message', message)
+    if(message.type == "VERIWALLET_RESPONSE") {
+      console.log("know it triggered")
+      window.postMessage({
+        type: 'VERIWALLET_RESPONSE',
+        response: message
+    }, '*'); 
+    }
+  //   window.postMessage({
+  //     type: 'VERIWALLET_RESPONSE',
+  //     response: "hi"
+  // }, '*'); 
+
   })
 }
 

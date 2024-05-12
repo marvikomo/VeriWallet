@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from 'react-router-dom';
+import KeyringController from '../controllers/keyring-controller'
 //import './popup.css'
-import { generateAccount } from "../wallet-utils/accountUtils";
-import TransactionStore from '../controllers/transaction-store'
+// import { generateAccount } from "../wallet-utils/accountUtils";
+// import TransactionStore from '../controllers/transaction-store'
 
 interface Account {
     privateKey: string;
@@ -14,16 +15,21 @@ const Popup = () => {
    let [searchParams, setSearchParams] = useSearchParams();
     const [showInput, setShowInput] = useState(false);
     const [seedPhrase, setSeedPhrase] = useState("");
-    const [account, setAccount] = useState<Account | null>(null);
+    const [account, setAccount] = useState(null);
 
 
     //console.log("paramVal", paramValue)
 
 
     useEffect(() => {
-
+      const fetchAccounts = async () => {
+       let response =   await KeyringController.getAccounts()
+       console.log("re...", response)
+      }
       const paramValue = searchParams.get('tabId');
 
+
+      fetchAccounts()
       console.log("param Value", paramValue)
   
   
@@ -35,28 +41,28 @@ const Popup = () => {
 
 
   
-    const createAccount = () => {
-      const account = generateAccount();// account object contains--> address, privateKey, seedPhrase, balance
-      console.log("Account created!", account);
-      setSeedPhrase(account.seedPhrase);
-      setAccount(account.account);
-    };
+    // const createAccount = () => {
+    //   const account = generateAccount();// account object contains--> address, privateKey, seedPhrase, balance
+    //   console.log("Account created!", account);
+    //   setSeedPhrase(account.seedPhrase);
+    //   setAccount(account.account);
+    // };
   
-    const showInputFunction = () => {
-      setShowInput(true);
-    };
+    // const showInputFunction = () => {
+    //   setShowInput(true);
+    // };
   
-    const handleSeedPhraseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSeedPhrase(e.target.value);
-    };
+    // const handleSeedPhraseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //   setSeedPhrase(e.target.value);
+    // };
   
-    const handleSeedPhraseSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      const account = generateAccount(seedPhrase);
-      console.log("Recovery", account);
-      setSeedPhrase(account.seedPhrase);
-      setAccount(account.account);
-    };
+    // const handleSeedPhraseSubmit = (e: React.FormEvent) => {
+    //   e.preventDefault();
+    //   const account = generateAccount(seedPhrase);
+    //   console.log("Recovery", account);
+    //   setSeedPhrase(account.seedPhrase);
+    //   setAccount(account.account);
+    // };
    
   
     return (

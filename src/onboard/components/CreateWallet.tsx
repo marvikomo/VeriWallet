@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { generateAccount } from '../../wallet-utils/accountUtils'
+// import { generateAccount } from '../../wallet-utils/accountUtils'
 import { useNavigate } from 'react-router-dom'
 import KeyringController from '../../controllers/keyring-controller'
 const CreateWallet = () => {
   const navigate = useNavigate()
 
-  const keyring = new KeyringController();
+  const keyring = KeyringController
 
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
+
   useEffect(() => {
+    
     keyring.getAccounts().then(res => {
       console.log("res>>>>>", res)
     })
@@ -45,7 +47,10 @@ const CreateWallet = () => {
     const k = keyring.filterKeyringsByType("HD Key Tree")
   //  console.log("kekk", k)
    const accts = await keyring.addNewAccount(k[0])
-    console.log("acctss", accts)
+   console.log("anno", accts)
+    console.log("acctss", await keyring.exportAccount(accts[0]))
+
+    console.log("store",  keyring.getKeyrings())
 
    
     const getAcct = await keyring.getAccounts()

@@ -8,13 +8,19 @@
         "default_title": "veriwallet",
         "default_icon" : "icon.png"
     },
-
+    
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    },
+    
     "permissions": [
         "activeTab",
         "tabs",
         "bookmarks",
         "storage",
-        "identity"
+        "identity",
+        "scripting",
+        "notifications"
     ],
     "icons": {
         "16" : "icon.png",

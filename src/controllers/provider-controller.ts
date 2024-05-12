@@ -1,62 +1,101 @@
-import TransactionController from "./transaction-controller";
-import { providerInstances } from "./event-handler";
-import transactionStore from "./transaction-store";
-
+import TransactionController from './transaction-controller'
+import { providerInstances } from './event-handler'
+import transactionStore from './transaction-store'
+import keyring from './keyring-controller'
+import { BaseController } from './base-controller'
+//import { cloneDeep } from 'lodash';
+import OnboardingController from './onboarding-controller'
+import { extend } from 'lodash'
 
 export const RequestType = {
-    CONFIRM_TRANSACTION: 'confirmTransaction',
-    SIGN_TRANSACTION: 'signTransaction',
-};
+  SEND_TRANSACTION: 'eth_sendTransaction',
+  SIGN_TRANSACTION: 'signTransaction',
+  REQUEST_ACCOUNT: 'eth_requestAccounts'
+}
 
-class ProviderController {
-    private readonly transactionController: TransactionController;
+//const transactionController = new keyring();
 
-    constructor() {
-     this.transactionController = new TransactionController();
-     
-    }
+class ProviderController extends BaseController {
+  private readonly transactionController
 
-    handler(message, port, portId) {
+  constructor() {
+    super({ transaction: [] })
+    //this.transactionController = new OnboardingController()
+  }
 
-      console.log("message received in handler", message)
-     this.handle(message.type, message.request, port, portId);
-      
-    }
+  subscriber(newState) {
+    console.log('heard you', newState)
+  }
 
-  async handle(type, request, port, portId) {
-    switch (type) {
-      case RequestType.CONFIRM_TRANSACTION:
-        return await this.confirmTransaction(request, portId)
+  async handler(request, port, portId) {
+    console.log('message received in handler', request)
+    return await this.handle(request, port, portId)
+  }
+
+  async handle({ method, params }, port, portId) {
+    try {
+      console.log('Method g', method)
+
+      switch (method) {
+        case RequestType.SEND_TRANSACTION:
+          return await this.confirmTransaction(method, params, portId)
+        case RequestType.REQUEST_ACCOUNT:
+          return await this.requestAccount(port, portId)
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 
-    private async confirmTransaction(request, portId) {
-      const instance = providerInstances[portId];
-      
+  //Change to send transaction
+  private async confirmTransaction(method, params, portId) {
+    const instance = providerInstances[portId]
 
-      // console.log("portid", portId)
+    console.log('Method', method)
+    console.log('Param', params)
+    const transactions = [...this.store.getState().transaction]
 
-      // console.log("transactionstore", transactionStore.getTransaction(portId));
-    //   const currentTransactions = transactionStore.getState().transactions;
-    // transactionStore.putState({
-    //     transactions: [...currentTransactions, request]
-    // });
-
-      const currentWindow = await chrome.windows.getCurrent();
-      console.log("current window", currentWindow)
-      console.log("isntnce", instance);
-
-      chrome.windows.create({
-        url: chrome.runtime.getURL('transaction.html') + '?tabId=' + portId,
-        type: 'popup',
-        width: 400,
-        height: 600
-      });
-
-
+    let tx = {
+      id: portId,
+      method,
+      params,
     }
+
+    transactions.push(tx)
+
+    this.store.updateState({
+      transaction: transactions,
+    })
+
+    console.log('state', this.store.getState())
+
+   
+    chrome.windows.create({
+      url: chrome.runtime.getURL('transaction.html') + '?tabId=' + portId,
+      type: 'popup',
+      width: 400,
+      height: 600
+    });
+  }
+
+
+
+  private async requestAccount(port: any, portId) {
+    chrome.windows.create({
+      url: chrome.runtime.getURL('connect.html') + '?tabId=' + port,
+      type: 'popup',
+      width: 400,
+      height: 600
+    });
+
+    
+    return "PORT11111"
+    
+  }
+
+
 
 
 }
 
-export default ProviderController;
+export default ProviderController

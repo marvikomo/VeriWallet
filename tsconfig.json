@@ -1,9 +1,15 @@
  {
      "compilerOptions": {
+        "target": "es6",
+        "lib": ["esnext", "dom", "DOM.Iterable"],
+        "skipLibCheck": true,
+        "noEmit": false,
+        "allowJs": true,
+        "sourceMap": true,
          "jsx": "react",
-         "module": "es6",
-         "target": "es6",
+         "module": "ESNext",
          "moduleResolution": "node",
+         "resolveJsonModule": true,
          "esModuleInterop": true,
      },
      "include": ["src/**/*.ts", "src/**/*.tsx"],
