@@ -30,34 +30,32 @@ const CreateWallet = () => {
     //Onboard
     const keyStringstate =  chrome.storage.local.get(['keyringState'])
   
+    let valueToPersit = null
     keyring.loadStore(keyStringstate)
     keyring.store.subscribe(value => {
       console.log("keyring state>>>", value)
+      valueToPersit = value
     })
     
     await keyring.boot(password);
 
     //get mnemonic
     let seed = await keyring.getMnemonic();
-    console.log("seed", seed)
-
-
+  
    await keyring.createKeyringWithMnemonics(seed);
 
     const k = keyring.filterKeyringsByType("HD Key Tree")
-  //  console.log("kekk", k)
+
    const accts = await keyring.addNewAccount(k[0])
-   console.log("anno", accts)
-    console.log("acctss", await keyring.exportAccount(accts[0]))
-
-    console.log("store",  keyring.getKeyrings())
-
    
     const getAcct = await keyring.getAccounts()
 
-    console.log("getAcct", getAcct)
+    const exported = await keyring.exportAccount(getAcct[0])
 
+    console.log("getAcct", exported)
 
+    const port = chrome.runtime.connect({ name: 'persit-keyring' })
+    port.postMessage({ type: 'PERSIT_KEYRING', value:valueToPersit, address: getAcct[0]})
 
 
     //store it encrypted password
@@ -69,9 +67,7 @@ const CreateWallet = () => {
     // console.log("acct created", account)
 
     // Handle the password creation logic here
-    console.log('password', password)
-    console.log('confirmPassword', confirmPassword)
-    console.log(password, confirmPassword)
+  
 
     navigate('/wallet-created')
   }

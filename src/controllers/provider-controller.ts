@@ -88,8 +88,25 @@ class ProviderController extends BaseController {
       height: 600
     });
 
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.get(['walletData'], async function(result) {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError); // R
+        }
+        resolve(result['walletData'].address);
+        console.log("result of stored", result['walletData'].address);
+    });
+
+    })
+
+  //   chrome.storage.local.get(['walletData'], async function(result) {
+  //     if (chrome.runtime.lastError) {
+       
+  //     }
     
-    return "PORT11111"
+  //     console.log("result of stored", result['walletData'].address);
+  // });
+  //   return "PORT11111"
     
   }
 

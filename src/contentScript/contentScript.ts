@@ -42,10 +42,14 @@ window.addEventListener('message', (message) => {
     windowListener(message)
 })
 
+
+
 const init = () => {
+
   port = chrome.runtime.connect({ name: 'provider' })
   port.onMessage.addListener((message: any): void => {
     console.log('prot message', message)
+    //This handles request_account and confirm_transaction response
     if(message.type == "VERIWALLET_RESPONSE") {
       console.log("know it triggered")
       window.postMessage({
@@ -53,10 +57,6 @@ const init = () => {
         response: message
     }, '*'); 
     }
-  //   window.postMessage({
-  //     type: 'VERIWALLET_RESPONSE',
-  //     response: "hi"
-  // }, '*'); 
 
   })
 }

@@ -1,8 +1,10 @@
 import { handleEvent } from '../controllers/event-handler'
 import ProviderController from '../controllers/provider-controller'
 
+
 const initWallet = (): any => {
   try {
+
 
     let providerPort = null;
 
@@ -61,13 +63,28 @@ const initWallet = (): any => {
 
           port.onMessage.addListener((msg) => {
             if (msg.type === 'REQUEST_SUCCESS' && port) {
+              console.log("msg>>>>", msg)
               // Immediately send stored data if available
-               console.log("came here o", providerPort)
                providerPort.postMessage({type: 'VERIWALLET_RESPONSE', receipt: msg.receipt});
             }
           })
 
 
+        }else if(port.name == 'persit-keyring'){
+           //This event is for the signup page
+           port.onDisconnect.addListener(() => {
+            port = null
+          })
+         //receives event from create wallet component
+          port.onMessage.addListener((msg) => {
+            if (msg.type === 'PERSIT_KEYRING' && port) {
+              chrome.storage.local.set({ ['walletData']: msg }, function() {
+                console.log('Data is stored in local storage.');
+            });
+            }
+          })
+
+            
         }else{
 
           // cloneDeep("")

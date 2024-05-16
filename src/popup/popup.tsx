@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from 'react-router-dom';
-import KeyringController from '../controllers/keyring-controller'
-//import './popup.css'
-// import { generateAccount } from "../wallet-utils/accountUtils";
-// import TransactionStore from '../controllers/transaction-store'
+import { getAvaxBalance } from "../utils/web3.util";
+
 
 interface Account {
     privateKey: string;
@@ -13,114 +11,93 @@ interface Account {
 
 const Popup = () => {
    let [searchParams, setSearchParams] = useSearchParams();
-    const [showInput, setShowInput] = useState(false);
-    const [seedPhrase, setSeedPhrase] = useState("");
-    const [account, setAccount] = useState(null);
-
-
-    //console.log("paramVal", paramValue)
-
+   const [address, setAddress] = useState<any>()
+   const [balance, setBalance] = useState<any>()
+   const [activity, setActivity] = useState<any>([])
+   
 
     useEffect(() => {
-      const fetchAccounts = async () => {
-       let response =   await KeyringController.getAccounts()
-       console.log("re...", response)
+
+      async function getBalance(address) {
+        return await getAvaxBalance(address);
       }
+  
       const paramValue = searchParams.get('tabId');
 
+      chrome.storage.local.get(['walletData'], async function(result) {
+        if (chrome.runtime.lastError) {
+         
+        }
+        setAddress(result['walletData'].address)
+        const _balance = await getBalance(result.walletData.address);
+                setBalance(_balance);
+                console.log("balance", _balance);
+    
+        console.log("result of stored", result['walletData'].address);
+    });
 
-      fetchAccounts()
-      console.log("param Value", paramValue)
-  
-  
-      console.log("query param", paramValue)
+
+    chrome.storage.local.get(['activity'], async function(result) {
+      const activityData = result['activityData'] || [];
+      activityData.sort((a, b) => b.blockNumber - a.blockNumber);
+      setActivity(result.activity)
+
+    })
 
        
     }, []);
 
 
 
-  
-    // const createAccount = () => {
-    //   const account = generateAccount();// account object contains--> address, privateKey, seedPhrase, balance
-    //   console.log("Account created!", account);
-    //   setSeedPhrase(account.seedPhrase);
-    //   setAccount(account.account);
-    // };
-  
-    // const showInputFunction = () => {
-    //   setShowInput(true);
-    // };
-  
-    // const handleSeedPhraseChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //   setSeedPhrase(e.target.value);
-    // };
-  
-    // const handleSeedPhraseSubmit = (e: React.FormEvent) => {
-    //   e.preventDefault();
-    //   const account = generateAccount(seedPhrase);
-    //   console.log("Recovery", account);
-    //   setSeedPhrase(account.seedPhrase);
-    //   setAccount(account.account);
-    // };
-   
-  
     return (
-      <div className="bg-black min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-sm mx-auto bg-gray-900 text-white rounded-lg overflow-hidden">
-        <div className="p-4 flex justify-between items-center border-b border-gray-800">
-          <div>
-            <p className="text-sm">Ethereum Mainnet</p>
-            <h2 className="font-bold">Account 1</h2>
-          </div>
-          <div>
-            <p className="text-sm">0x8C7Bd...91576</p>
-          </div>
-        </div>
-        <div className="p-4">
-          <h3 className="text-2xl font-bold">0 ETH</h3>
-          <p className="text-sm mb-4">$0.00 USD</p>
-          <div className="flex justify-around text-sm mb-4">
-            <button className="px-2">Buy & Sell</button>
-            <button className="px-2">Send</button>
-            <button className="px-2">Swap</button>
-            <button className="px-2">Bridge</button>
-            <button className="px-2">Portfolio</button>
-          </div>
-          <div className="flex mb-4">
-            <div className="flex-1 bg-blue-600 p-2 mr-2 rounded">
-              <button className="w-full">Buy</button>
-            </div>
-            <div className="flex-1 bg-purple-600 p-2 rounded">
-              <button className="w-full">Receive</button>
-            </div>
-          </div>
-          <div className="mb-4">
-            <p className="text-sm mb-2">Tokens</p>
-            <div className="flex items-center p-2 bg-blue-800 rounded mb-2">
-              <img src="/path-to-your-ethereum-logo.svg" alt="ETH" className="h-6 w-6 mr-2" />
+      <div className="bg-black text-white min-h-screen p-4">
+        <div className="max-w-md mx-auto">
+          {/* Profile Section */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-2">
+              <div className="bg-gray-700 rounded-full h-8 w-8"></div>
               <div>
-                <p>ETH + Stake</p>
-                <p className="text-sm">Ethereum</p>
+                <p className="text-lg font-bold">Wallet1</p>
+                <p className="text-xs">{ address }</p>
               </div>
             </div>
-            <p className="text-sm text-gray-400">0 ETH</p>
-            <p className="text-sm text-gray-400">$0.00 USD</p>
+          
           </div>
+  
+          {/* Balance Section */}
+          <div className="text-center mb-8">
+            <p className="text-3xl font-bold">{+balance} AVAX</p>
+            {/* <p className="text-gray-400">$41.68 USD</p> */}
+          </div>
+  
+          {/* Activity Section */}
           <div>
-            <button className="text-blue-500 hover:underline text-sm">Import tokens</button>
-          </div>
-          <div className="my-4">
-            <button className="text-blue-500 hover:underline text-sm">Refresh list</button>
-          </div>
+          <h2 className="text-xl font-bold mb-4">Activity</h2>
           <div>
-            <button className="text-blue-500 hover:underline text-sm">MetaMask support</button>
+            {activity.map((item, index) => (
+              <div key={index} className="mb-4">
+                <p className="text-gray-400">{item.date}</p>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center">
+                    <div className="bg-gray-700 h-6 w-6 rounded-full mr-2"></div>
+                    <p>Contract Interaction</p>
+                  </div>
+                  <div className="flex items-center">
+                    <p className="text-green-500 mr-2">{item.status}</p>
+                    <p className="text-red-500 mr-2">0.001 Avax</p>
+                    <a href={"https://testnet.snowtrace.io/tx/" + item.transactionHash} target="_blank" rel="noopener noreferrer" ><p className="text-gray-400">View</p></a>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
+
+
+        </div>
       </div>
-    </div>
-    
     );
+  
 };
 
 export default Popup;

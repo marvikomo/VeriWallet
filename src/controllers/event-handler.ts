@@ -24,8 +24,9 @@ export const handleEvent = (port, controller):any => {
   const messageListener = async ({request, data}: any, port: any) => {
 
     let response = await controller.handler(request, port, uuid());
+    console.log("txResponse", response)
   
-    port.postMessage({type: 'REQUEST_POPUP_DATA', id: response});
+    //port.postMessage({type: 'VERIWALLET_RESPONSE', address: response});
 
   }
 

@@ -6,9 +6,15 @@ import './connect.css'
 
 
 const Connect = () => {
-
+  const [address, setAddress] = useState<any>()
     useEffect(() => {
 
+      chrome.storage.local.get(['walletData'], async function(result) {
+        if (chrome.runtime.lastError) {
+         
+        }
+        setAddress(result['walletData'].address)
+    });
        
     }, []);
 
@@ -17,13 +23,11 @@ const Connect = () => {
 
     console.log("paramValue", paramValue)
     const accounts = [
-        { address: '0xc01bf7...a90d0', label: 'Account 1' },
-        { address: '0xcd8b7...4ce71', label: 'Account 2' },
+        { address, label: 'Acct' },
+
       ];
 
       const handleSubmit = () => {
-        // const port = chrome.runtime.connect({name: 'connect'});
-        // port.postMessage({type: 'REQUEST_CONNECT', id: paramValue});
         window.close(); 
       }
 

@@ -5,7 +5,7 @@ import WalletProvider from '@truffle/hdwallet-provider'
 
 import registryAbi from '../abis/registry.json'
 
-const PRIVATE_KEY =''
+const PRIVATE_KEY ='4cacfec187b1b89b13e888784697c86de3cdb2c79b318777e92ebcfea52bef43'
 
 const contractAddress = '0x7e936F77322409F1f3cF9ff4B9a7783F1DF30251'
 
@@ -20,19 +20,28 @@ const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
 
 const contract = new ethers.Contract(contractAddress, registryAbi.abi, provider)
 
-async function fetchData() {
+async function fetchData(address) {
   try {
+    console.log("initiating fetch...")
     const data = await contract.getDAppDetails(
-      '0xf1C50D1D7585ac2B94BAD9ebde9e0b7Aa0225E20',
+      address,
     )
+    console.log("data", data)
     return data
   } catch (error) {
+    return null
     console.error('Error fetching data from the contract:', error)
   }
 }
 
 async function getContract(contractAddress, signerAddress, abi) {
   return new ethers.Contract(contractAddress, abi, wallet)
+}
+async function getAvaxBalance(address) {
+  const balance =  await provider.getBalance(address)
+  const avaxBalance = ethers.formatEther(balance);
+  console.log(`Balance of ${address} is: ${avaxBalance} AVAX`);
+  return avaxBalance;
 }
 
 async function signTransactions(
@@ -59,4 +68,4 @@ async function signTransactions(
   }
 }
 
-export { fetchData, signTransactions }
+export { fetchData, signTransactions, getAvaxBalance }
